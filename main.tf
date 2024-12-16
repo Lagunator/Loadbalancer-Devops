@@ -19,13 +19,7 @@ resource "aws_instance" "nginx-server" {
               sudo systemctl start nginx
               EOF
 
-  key_name               = aws_key_pair.nginx-server-ssh.key_name
   vpc_security_group_ids = [aws_security_group.nginx-server.id]
-}
-
-resource "aws_key_pair" "nginx-server-ssh" {
-  key_name   = "nginx-server-ssh"
-  public_key = file("nginx-server.key.pub")
 }
 
 resource "aws_security_group" "nginx-server" {
@@ -56,7 +50,7 @@ resource "aws_security_group" "nginx-server" {
 
 resource "aws_elb" "nginx-elb" {
   name               = "nginx-elb"
-  availability_zones = ["us-east-1a", "us-east-1b"] 
+  availability_zones = ["us-east-1a", "us-east-1b"]
 
   listener {
     instance_port     = 80
